@@ -32,7 +32,7 @@ export default function ArticleCard({ article, featured = false }: ArticleCardPr
             {article.category && (
               <CategoryBadge name={article.category.name} slug={article.category.slug?.current} size="sm" className="mb-3" />
             )}
-            <h2 className="text-xl font-bold text-primary-DEFAULT mb-3 group-hover:text-accent-DEFAULT transition-colors line-clamp-3">
+            <h2 className="text-xl font-bold mb-3 transition-colors line-clamp-3" style={{ color: '#1A365D' }}>
               <Link href={`/articles/${article.slug.current}`}>{article.title}</Link>
             </h2>
             {article.excerpt && (
@@ -69,7 +69,7 @@ export default function ArticleCard({ article, featured = false }: ArticleCardPr
         {article.category && (
           <CategoryBadge name={article.category.name} slug={article.category.slug?.current} size="sm" className="mb-3 self-start" />
         )}
-        <h2 className="text-base font-bold text-primary-DEFAULT mb-2 group-hover:text-accent-DEFAULT transition-colors line-clamp-3 flex-1">
+        <h2 className="text-base font-bold mb-2 transition-colors line-clamp-3 flex-1" style={{ color: '#1A365D' }}>
           <Link href={`/articles/${article.slug.current}`}>{article.title}</Link>
         </h2>
         {article.excerpt && (

@@ -27,7 +27,7 @@ export default function NewsletterSignup({ variant = 'banner' }: NewsletterSignu
       const data = await res.json()
       if (res.ok) {
         setStatus('success')
-        setMessage(data.message || 'You\'re subscribed! Welcome aboard.')
+        setMessage(data.message || "You're subscribed! Welcome aboard.")
         setEmail('')
         setName('')
       } else {
@@ -42,21 +42,26 @@ export default function NewsletterSignup({ variant = 'banner' }: NewsletterSignu
 
   if (status === 'success') {
     return (
-      <div className={variant === 'banner' ? 'bg-primary-DEFAULT rounded-xl p-8 text-center' : 'text-center py-4'}>
+      <div
+        className="rounded-xl p-8 text-center"
+        style={variant === 'banner' ? { background: '#1A365D' } : {}}
+      >
         <CheckCircle className="w-12 h-12 text-green-400 mx-auto mb-3" />
-        <p className={variant === 'banner' ? 'text-white font-medium' : 'text-primary-DEFAULT font-medium'}>{message}</p>
+        <p className="font-medium text-white">{message}</p>
       </div>
     )
   }
 
   if (variant === 'inline') {
     return (
-      <div className="bg-accent-50 border border-accent-200 rounded-xl p-6">
+      <div className="rounded-xl p-6" style={{ background: '#EEEEFF', border: '1px solid #ABABF7' }}>
         <div className="flex items-center gap-2 mb-2">
-          <Mail className="w-5 h-5 text-accent-DEFAULT" />
-          <h3 className="font-semibold text-primary-DEFAULT">Stay in the loop</h3>
+          <Mail className="w-5 h-5" style={{ color: '#6366F1' }} />
+          <h3 className="font-semibold" style={{ color: '#1A365D' }}>Stay in the loop</h3>
         </div>
-        <p className="text-sm text-gray-600 mb-4">Get practical IT audit and technology risk insights delivered to your inbox.</p>
+        <p className="text-sm text-gray-600 mb-4">
+          Get practical IT audit and technology risk insights delivered to your inbox.
+        </p>
         <form onSubmit={handleSubmit} className="flex flex-col gap-2">
           <input
             type="email"
@@ -64,12 +69,18 @@ export default function NewsletterSignup({ variant = 'banner' }: NewsletterSignu
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Your email address"
             required
-            className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-DEFAULT"
+            className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none"
+            style={{ outline: 'none' }}
+            onFocus={e => (e.target.style.boxShadow = '0 0 0 2px #6366F1')}
+            onBlur={e => (e.target.style.boxShadow = 'none')}
           />
           <button
             type="submit"
             disabled={status === 'loading'}
-            className="w-full bg-accent-DEFAULT text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-accent-600 transition-colors disabled:opacity-60"
+            className="w-full text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-60"
+            style={{ background: '#6366F1' }}
+            onMouseEnter={e => (e.currentTarget.style.background = '#4547D6')}
+            onMouseLeave={e => (e.currentTarget.style.background = '#6366F1')}
           >
             {status === 'loading' ? 'Subscribing…' : 'Subscribe'}
           </button>
@@ -80,15 +91,15 @@ export default function NewsletterSignup({ variant = 'banner' }: NewsletterSignu
   }
 
   return (
-    <div className="bg-primary-DEFAULT rounded-xl p-8 md:p-12">
+    <div className="rounded-xl p-8 md:p-12" style={{ background: '#1A365D' }}>
       <div className="max-w-2xl mx-auto text-center">
-        <Mail className="w-10 h-10 text-accent-300 mx-auto mb-4" />
+        <Mail className="w-10 h-10 mx-auto mb-4" style={{ color: '#A5B4FC' }} />
         <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
           Get Audit Insights in Your Inbox
         </h2>
-        <p className="text-primary-200 mb-8">
-          Practical articles on IT audit, SOC reporting, cybersecurity governance, and emerging technology risks.
-          No spam — unsubscribe anytime.
+        <p className="mb-8" style={{ color: '#91AADB' }}>
+          Practical articles on IT audit, SOC reporting, cybersecurity governance, and emerging
+          technology risks. No spam — unsubscribe anytime.
         </p>
         <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
           <input
@@ -96,7 +107,9 @@ export default function NewsletterSignup({ variant = 'banner' }: NewsletterSignu
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Your name (optional)"
-            className="flex-1 px-4 py-3 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-accent-300 text-gray-800 text-sm"
+            className="flex-1 px-4 py-3 rounded-lg border-0 text-gray-800 text-sm focus:outline-none"
+            onFocus={e => (e.target.style.boxShadow = '0 0 0 2px #A5B4FC')}
+            onBlur={e => (e.target.style.boxShadow = 'none')}
           />
           <input
             type="email"
@@ -104,12 +117,17 @@ export default function NewsletterSignup({ variant = 'banner' }: NewsletterSignu
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Your email address"
             required
-            className="flex-1 px-4 py-3 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-accent-300 text-gray-800 text-sm"
+            className="flex-1 px-4 py-3 rounded-lg border-0 text-gray-800 text-sm focus:outline-none"
+            onFocus={e => (e.target.style.boxShadow = '0 0 0 2px #A5B4FC')}
+            onBlur={e => (e.target.style.boxShadow = 'none')}
           />
           <button
             type="submit"
             disabled={status === 'loading'}
-            className="bg-accent-DEFAULT text-white px-6 py-3 rounded-lg font-medium hover:bg-accent-600 transition-colors disabled:opacity-60 whitespace-nowrap text-sm"
+            className="text-white px-6 py-3 rounded-lg font-medium transition-colors disabled:opacity-60 whitespace-nowrap text-sm"
+            style={{ background: '#6366F1' }}
+            onMouseEnter={e => (e.currentTarget.style.background = '#4547D6')}
+            onMouseLeave={e => (e.currentTarget.style.background = '#6366F1')}
           >
             {status === 'loading' ? 'Subscribing…' : 'Subscribe'}
           </button>
