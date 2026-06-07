@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(node -e \"const pkg=require\\('./package.json'\\); console.log\\(pkg.dependencies.next\\)\")",
+      "Bash(npx tsc *)"
+    ]
+  }
+}

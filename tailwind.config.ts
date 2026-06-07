@@ -1,0 +1,79 @@
+import type { Config } from 'tailwindcss'
+
+const config: Config = {
+  content: [
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          DEFAULT: '#1A365D',
+          50: '#EBF0F8',
+          100: '#C8D6EC',
+          200: '#91AADB',
+          300: '#5A7EC9',
+          400: '#2D5CB4',
+          500: '#1A365D',
+          600: '#152C4E',
+          700: '#10213A',
+          800: '#0B1627',
+          900: '#060B13',
+        },
+        secondary: {
+          DEFAULT: '#2D3748',
+          50: '#F0F2F5',
+          100: '#D5DAE3',
+          200: '#AAB5C7',
+          300: '#7F90AB',
+          400: '#546B8F',
+          500: '#2D3748',
+          600: '#242D3A',
+          700: '#1B222C',
+          800: '#12161D',
+          900: '#090B0F',
+        },
+        accent: {
+          DEFAULT: '#3182CE',
+          50: '#EBF4FF',
+          100: '#C3DFFE',
+          200: '#90C2FC',
+          300: '#5DA5FA',
+          400: '#3E92F5',
+          500: '#3182CE',
+          600: '#2168A8',
+          700: '#194F82',
+          800: '#10355C',
+          900: '#081B30',
+        },
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        heading: ['Inter', 'system-ui', 'sans-serif'],
+      },
+      typography: (theme: (path: string) => string) => ({
+        DEFAULT: {
+          css: {
+            color: theme('colors.gray.800'),
+            a: {
+              color: theme('colors.accent.DEFAULT'),
+              '&:hover': { color: theme('colors.primary.DEFAULT') },
+            },
+            h1: { color: theme('colors.primary.DEFAULT'), fontWeight: '700' },
+            h2: { color: theme('colors.primary.DEFAULT'), fontWeight: '600' },
+            h3: { color: theme('colors.secondary.DEFAULT'), fontWeight: '600' },
+            blockquote: {
+              borderLeftColor: theme('colors.accent.DEFAULT'),
+              color: theme('colors.secondary.DEFAULT'),
+            },
+          },
+        },
+      }),
+    },
+  },
+  plugins: [],
+}
+
+export default config
