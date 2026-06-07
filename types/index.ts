@@ -84,3 +84,17 @@ export interface SiteConfig {
   siteUrl: string
   linkedinUrl: string
 }
+
+export interface DraftArticle {
+  _id: string
+  title: string
+  slug?: { _type: 'slug'; current: string }
+  excerpt?: string
+  content?: string
+  status: 'draft' | 'review' | 'published'
+  category?: string
+  tags?: string[]
+  createdAt: string
+  updatedAt: string
+  wordCount?: number
+}

@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Search, Menu, X } from 'lucide-react'
+import { Search, Menu, X, Lock } from 'lucide-react'
 import { siteConfig } from '@/lib/config'
 
 const navItems = [
@@ -58,6 +58,29 @@ export default function Header() {
                 {item.label}
               </Link>
             ))}
+
+            {/* Divider */}
+            <span className="mx-1 h-4 w-px" style={{ background: '#2D4A7A' }} />
+
+            {/* Dashboard / Login */}
+            <Link
+              href="/dashboard"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all"
+              style={{ borderColor: '#4B5EAA', color: '#A5B4FC' }}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = '#6366F1'
+                e.currentTarget.style.borderColor = '#6366F1'
+                e.currentTarget.style.color = '#fff'
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = 'transparent'
+                e.currentTarget.style.borderColor = '#4B5EAA'
+                e.currentTarget.style.color = '#A5B4FC'
+              }}
+            >
+              <Lock className="w-3 h-3" />
+              Dashboard
+            </Link>
           </nav>
 
           {/* Search + mobile toggle */}
@@ -110,6 +133,19 @@ export default function Header() {
               style={{ color: '#C8D6EC' }}
             >
               <Search className="w-4 h-4" /> Search
+            </Link>
+
+            {/* Divider */}
+            <div className="my-1 h-px" style={{ background: '#1D3461' }} />
+
+            {/* Dashboard / Login */}
+            <Link
+              href="/dashboard"
+              onClick={() => setMobileOpen(false)}
+              className="px-3 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 border transition-colors"
+              style={{ borderColor: '#4B5EAA', color: '#A5B4FC' }}
+            >
+              <Lock className="w-4 h-4" /> Dashboard
             </Link>
           </nav>
         </div>
