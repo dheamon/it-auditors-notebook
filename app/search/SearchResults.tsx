@@ -35,18 +35,22 @@ export default async function SearchResults({ query }: Props) {
       <p className="text-sm text-gray-500 mb-5">
         {results.length} result{results.length !== 1 ? 's' : ''} for &ldquo;{query}&rdquo;
       </p>
-      <div className="space-y-4">
+      <div className="space-y-3 md:space-y-4">
         {results.map((article) => {
           const rt = estimateReadingTime(article.content || [])
           return (
-            <article key={article._id} className="bg-white border border-gray-100 rounded-xl p-5 hover:shadow-sm transition-shadow">
+            <article key={article._id} className="bg-white border border-gray-100 rounded-xl p-4 md:p-5 hover:shadow-sm transition-shadow">
               {article.category && (
-                <CategoryBadge name={article.category.name} slug={article.category.slug?.current} size="sm" className="mb-2" />
+                <div className="mb-2">
+                  <CategoryBadge name={article.category.name} slug={article.category.slug?.current} size="sm" />
+                </div>
               )}
-              <h2 className="font-bold text-primary-DEFAULT hover:text-accent-DEFAULT transition-colors mb-1">
+              <h2 className="font-bold mb-1 hover:text-indigo-600 transition-colors text-sm md:text-base" style={{ color: '#1A365D' }}>
                 <Link href={`/articles/${article.slug.current}`}>{article.title}</Link>
               </h2>
-              {article.excerpt && <p className="text-sm text-gray-600 mb-3 line-clamp-2">{article.excerpt}</p>}
+              {article.excerpt && (
+                <p className="text-sm text-gray-600 mb-3 line-clamp-2">{article.excerpt}</p>
+              )}
               <div className="flex items-center gap-3 text-xs text-gray-400">
                 <span className="flex items-center gap-1">
                   <Calendar className="w-3 h-3" />

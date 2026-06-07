@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import ArticleCard from '@/components/ui/ArticleCard'
-import { getCategoryBySlug, getArticlesByCategory, getCategorySlugs } from '@/lib/queries'
+import { getCategoryBySlug, getArticlesByCategory } from '@/lib/queries'
 import { CATEGORIES } from '@/lib/config'
 
 export const revalidate = 3600
@@ -38,13 +38,16 @@ export default async function CategoryPage({ params }: Props) {
   const displayDesc = category?.description || staticCat?.description || ''
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="mb-10">
-        <div className="inline-block bg-accent-50 text-accent-DEFAULT text-sm font-medium px-3 py-1 rounded-full mb-3 border border-accent-200">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+      <div className="mb-8 md:mb-10">
+        <div
+          className="inline-block text-sm font-medium px-3 py-1 rounded-full mb-3"
+          style={{ background: '#EEEEFF', color: '#6366F1', border: '1px solid #ABABF7' }}
+        >
           Category
         </div>
-        <h1 className="text-3xl md:text-4xl font-bold text-primary-DEFAULT mb-3">{displayName}</h1>
-        {displayDesc && <p className="text-gray-600 max-w-2xl">{displayDesc}</p>}
+        <h1 className="text-3xl md:text-4xl font-bold mb-3" style={{ color: '#1A365D' }}>{displayName}</h1>
+        {displayDesc && <p className="text-gray-600 max-w-2xl text-sm md:text-base">{displayDesc}</p>}
       </div>
 
       {articles.length === 0 ? (
@@ -54,7 +57,7 @@ export default async function CategoryPage({ params }: Props) {
           <p className="text-gray-500">Check back soon.</p>
         </div>
       ) : (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
           {articles.map((article) => (
             <ArticleCard key={article._id} article={article} />
           ))}

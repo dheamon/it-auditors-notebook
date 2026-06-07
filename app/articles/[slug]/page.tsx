@@ -39,10 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description,
     openGraph: {
-      title,
-      description,
-      url,
-      type: 'article',
+      title, description, url, type: 'article',
       publishedTime: article.publishedDate,
       images: imageUrl ? [{ url: imageUrl, width: 1200, height: 630, alt: article.title }] : [],
     },
@@ -80,9 +77,13 @@ export default async function ArticlePage({ params }: Props) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
+
         {/* Back link */}
-        <Link href="/articles" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-accent-DEFAULT mb-6 transition-colors">
+        <Link
+          href="/articles"
+          className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-indigo-600 mb-6 transition-colors"
+        >
           <ArrowLeft className="w-4 h-4" /> Back to Articles
         </Link>
 
@@ -94,23 +95,26 @@ export default async function ArticlePage({ params }: Props) {
         )}
 
         {/* Title */}
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary-DEFAULT leading-tight mb-5">
+        <h1
+          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-5"
+          style={{ color: '#1A365D' }}
+        >
           {article.title}
         </h1>
 
-        {/* Meta */}
-        <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-6 pb-6 border-b border-gray-100">
+        {/* Meta row — wraps naturally on mobile */}
+        <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-6 pb-6 border-b border-gray-100">
           <span className="flex items-center gap-1.5">
-            <Calendar className="w-4 h-4" />
+            <Calendar className="w-4 h-4 flex-shrink-0" />
             {formatDate(article.publishedDate)}
           </span>
           <span className="flex items-center gap-1.5">
-            <Clock className="w-4 h-4" />
+            <Clock className="w-4 h-4 flex-shrink-0" />
             {readingTime} min read
           </span>
           {article.author && (
             <span className="flex items-center gap-1.5">
-              <User className="w-4 h-4" />
+              <User className="w-4 h-4 flex-shrink-0" />
               {article.author.name}
             </span>
           )}
@@ -118,7 +122,7 @@ export default async function ArticlePage({ params }: Props) {
 
         {/* Featured image */}
         {article.featuredImage && (
-          <div className="relative w-full aspect-video rounded-2xl overflow-hidden mb-10 shadow-md">
+          <div className="relative w-full aspect-video rounded-xl md:rounded-2xl overflow-hidden mb-8 md:mb-10 shadow-md">
             <Image
               src={imageUrl}
               alt={article.featuredImage.alt || article.title}
@@ -130,16 +134,16 @@ export default async function ArticlePage({ params }: Props) {
           </div>
         )}
 
-        {/* Content */}
+        {/* Article body */}
         {article.content && (
-          <div className="prose prose-lg max-w-none">
+          <div className="prose prose-base md:prose-lg max-w-none">
             <PortableText value={article.content} components={portableTextComponents} />
           </div>
         )}
 
         {/* Tags */}
         {article.tags && article.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mt-10 pt-6 border-t border-gray-100">
+          <div className="flex flex-wrap gap-2 mt-8 md:mt-10 pt-6 border-t border-gray-100">
             {article.tags.map((tag) => (
               <span key={tag} className="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full">
                 #{tag}
@@ -148,22 +152,33 @@ export default async function ArticlePage({ params }: Props) {
           </div>
         )}
 
-        {/* Share buttons */}
-        <div className="mt-8 pt-6 border-t border-gray-100">
+        {/* Share */}
+        <div className="mt-6 md:mt-8 pt-6 border-t border-gray-100">
           <ShareButtons title={article.title} url={articleUrl} />
         </div>
 
-        {/* Author bio */}
+        {/* Author bio — stacks on mobile */}
         {article.author && (
-          <div className="mt-10 p-6 bg-gray-50 rounded-2xl border border-gray-100 flex gap-4 items-start">
-            <div className="w-12 h-12 rounded-full bg-primary-DEFAULT flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+          <div className="mt-8 md:mt-10 p-5 md:p-6 bg-gray-50 rounded-2xl border border-gray-100 flex flex-col sm:flex-row gap-4 items-start">
+            <div
+              className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0"
+              style={{ background: '#1A365D' }}
+            >
               {article.author.name[0]}
             </div>
-            <div>
-              <p className="font-semibold text-primary-DEFAULT mb-1">{article.author.name}</p>
-              {article.author.bio && <p className="text-sm text-gray-600">{article.author.bio}</p>}
+            <div className="min-w-0">
+              <p className="font-semibold mb-1" style={{ color: '#1A365D' }}>{article.author.name}</p>
+              {article.author.bio && (
+                <p className="text-sm text-gray-600 leading-relaxed">{article.author.bio}</p>
+              )}
               {article.author.linkedinUrl && (
-                <a href={article.author.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-accent-DEFAULT hover:underline mt-1 inline-block">
+                <a
+                  href={article.author.linkedinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm hover:underline mt-1 inline-block"
+                  style={{ color: '#6366F1' }}
+                >
                   LinkedIn Profile →
                 </a>
               )}
@@ -172,17 +187,17 @@ export default async function ArticlePage({ params }: Props) {
         )}
 
         {/* Newsletter CTA */}
-        <div className="mt-12">
+        <div className="mt-10 md:mt-12">
           <NewsletterSignup variant="inline" />
         </div>
       </article>
 
       {/* Related articles */}
       {relatedArticles.length > 0 && (
-        <section className="bg-gray-50 py-14">
+        <section className="bg-gray-50 py-10 md:py-14">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-xl font-bold text-primary-DEFAULT mb-6">Related Articles</h2>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <h2 className="text-xl font-bold mb-6" style={{ color: '#1A365D' }}>Related Articles</h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {relatedArticles.map((a) => (
                 <ArticleCard key={a._id} article={a} />
               ))}
