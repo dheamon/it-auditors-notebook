@@ -57,20 +57,20 @@ export default function LoginForm({ callbackUrl }: Props) {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-5">
-        {/* Email */}
+        {/* Username */}
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">
-            Email address
+            Username
           </label>
           <input
             id="email"
-            type="email"
+            type="text"
             value={email}
             onChange={e => setEmail(e.target.value)}
             required
-            autoComplete="email"
+            autoComplete="username"
             autoFocus
-            placeholder="you@example.com"
+            placeholder="Enter your username"
             className={inputClass}
           />
         </div>
