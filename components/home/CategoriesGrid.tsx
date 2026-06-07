@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import { Shield, FileText, Users, Lock, BarChart2, Search, Brain, Database } from 'lucide-react'
 
