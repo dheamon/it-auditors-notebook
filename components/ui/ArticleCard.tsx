@@ -18,7 +18,7 @@ export default function ArticleCard({ article, featured = false }: ArticleCardPr
   if (featured) {
     return (
       <article className="group bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow flex flex-col lg:flex-row">
-        <div className="relative lg:w-1/2 h-56 lg:h-auto overflow-hidden">
+        <Link href={`/articles/${article.slug.current}`} className="relative lg:w-1/2 h-56 lg:h-auto overflow-hidden block">
           <Image
             src={imageUrl}
             alt={article.featuredImage?.alt || article.title}
@@ -26,7 +26,7 @@ export default function ArticleCard({ article, featured = false }: ArticleCardPr
             className="object-cover group-hover:scale-105 transition-transform duration-300"
             sizes="(max-width: 1024px) 100vw, 50vw"
           />
-        </div>
+        </Link>
         <div className="p-6 lg:w-1/2 flex flex-col justify-between">
           <div>
             {article.category && (
@@ -56,7 +56,7 @@ export default function ArticleCard({ article, featured = false }: ArticleCardPr
 
   return (
     <article className="group bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow flex flex-col">
-      <div className="relative h-48 overflow-hidden">
+      <Link href={`/articles/${article.slug.current}`} className="relative h-48 overflow-hidden block">
         <Image
           src={imageUrl}
           alt={article.featuredImage?.alt || article.title}
@@ -64,7 +64,7 @@ export default function ArticleCard({ article, featured = false }: ArticleCardPr
           className="object-cover group-hover:scale-105 transition-transform duration-300"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-      </div>
+      </Link>
       <div className="p-5 flex flex-col flex-1">
         {article.category && (
           <CategoryBadge name={article.category.name} slug={article.category.slug?.current} size="sm" className="mb-3 self-start" />
