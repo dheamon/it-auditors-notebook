@@ -1,4 +1,5 @@
 import { sanityClient } from './sanity'
+import { writeClient } from './write-client'
 import type { Article, Category, Author } from '@/types'
 
 const articleFields = `
@@ -41,7 +42,9 @@ export async function getAllArticles(): Promise<Article[]> {
 }
 
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
-  return sanityClient.fetch(
+  // Use writeClient (useCdn: false) so freshly published articles are always
+  // found on first request, without waiting for CDN propagation.
+  return writeClient.fetch(
     `*[_type == "article" && slug.current == $slug][0] {
       ${articleFields},
       content,
@@ -131,7 +134,9 @@ export interface PublishedArticleSummary {
 }
 
 export async function getPublishedArticlesList(): Promise<PublishedArticleSummary[]> {
-  return sanityClient.fetch(
+  // Use writeClient (useCdn: false) so the dashboard always sees
+  // freshly published articles without waiting for CDN propagation.
+  return writeClient.fetch(
     `*[_type == "article" && defined(publishedDate) && defined(slug.current)] | order(publishedDate desc) {
       _id, title, slug, publishedDate,
       category->{name, slug},

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
+import { revalidatePath } from 'next/cache'
 import { authOptions } from '@/lib/auth'
 import { writeClient } from '@/lib/write-client'
 
@@ -88,6 +89,11 @@ export async function POST(request: NextRequest) {
       .patch(draftId)
       .set({ status: 'published', updatedAt: now })
       .commit()
+
+    // Bust ISR cache so the article is immediately visible on the live blog
+    revalidatePath(`/articles/${finalSlug}`)
+    revalidatePath('/articles')
+    revalidatePath('/')
 
     return NextResponse.json({
       success: true,
