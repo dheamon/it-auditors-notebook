@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { FileText, Calendar, BookOpen, Plus, ArrowRight, Clock } from 'lucide-react'
+import { FileText, Calendar, BookOpen, Plus, ArrowRight, Clock, Globe } from 'lucide-react'
 import { getDrafts, getDraftStats } from '@/lib/draft-queries'
 import { formatDate } from '@/lib/utils'
 import type { DraftArticle } from '@/types'
@@ -62,7 +62,7 @@ function StatusBadge({ status }: { status: DraftArticle['status'] }) {
 
 export default async function DashboardPage() {
   const [stats, drafts] = await Promise.all([
-    getDraftStats().catch(() => ({ totalDrafts: 0, articlesThisMonth: 0, totalWords: 0 })),
+    getDraftStats().catch(() => ({ totalDrafts: 0, articlesThisMonth: 0, totalWords: 0, publishedCount: 0 })),
     getDrafts().catch(() => [] as DraftArticle[]),
   ])
 
@@ -91,7 +91,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <StatCard
           label="Total Drafts"
           value={stats.totalDrafts}
@@ -99,7 +99,13 @@ export default async function DashboardPage() {
           color="#6366F1"
         />
         <StatCard
-          label="Articles This Month"
+          label="Published Articles"
+          value={stats.publishedCount}
+          icon={Globe}
+          color="#059669"
+        />
+        <StatCard
+          label="Created This Month"
           value={stats.articlesThisMonth}
           icon={Calendar}
           color="#1A365D"
@@ -108,7 +114,7 @@ export default async function DashboardPage() {
           label="Total Words Written"
           value={stats.totalWords.toLocaleString()}
           icon={BookOpen}
-          color="#059669"
+          color="#D97706"
         />
       </div>
 

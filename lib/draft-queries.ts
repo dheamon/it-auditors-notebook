@@ -23,11 +23,12 @@ export async function getDraftStats(): Promise<{
   totalDrafts: number
   articlesThisMonth: number
   totalWords: number
+  publishedCount: number
 }> {
   const now = new Date()
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
 
-  const [all, thisMonth] = await Promise.all([
+  const [all, thisMonth, publishedCount] = await Promise.all([
     writeClient.fetch<Array<{ wordCount?: number }>>(
       `*[_type == "draftArticle"] { wordCount }`
     ),
@@ -35,10 +36,13 @@ export async function getDraftStats(): Promise<{
       `count(*[_type == "draftArticle" && createdAt >= $startOfMonth])`,
       { startOfMonth }
     ),
+    writeClient.fetch<number>(
+      `count(*[_type == "article" && defined(publishedDate) && defined(slug.current)])`
+    ),
   ])
 
   const totalDrafts = all.length
   const totalWords = all.reduce((sum, d) => sum + (d.wordCount ?? 0), 0)
 
-  return { totalDrafts, articlesThisMonth: thisMonth, totalWords }
+  return { totalDrafts, articlesThisMonth: thisMonth, totalWords, publishedCount }
 }

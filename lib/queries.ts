@@ -121,6 +121,25 @@ export async function getCategorySlugs(): Promise<{ slug: { current: string } }[
   )
 }
 
+export interface PublishedArticleSummary {
+  _id: string
+  title: string
+  slug: { current: string }
+  publishedDate: string
+  category?: { name: string; slug?: { current: string } }
+  tags?: string[]
+}
+
+export async function getPublishedArticlesList(): Promise<PublishedArticleSummary[]> {
+  return sanityClient.fetch(
+    `*[_type == "article" && defined(publishedDate) && defined(slug.current)] | order(publishedDate desc) {
+      _id, title, slug, publishedDate,
+      category->{name, slug},
+      tags
+    }`
+  )
+}
+
 export async function addSubscriber(email: string, name?: string): Promise<void> {
   await sanityClient.create({
     _type: 'subscriber',
