@@ -55,6 +55,8 @@ export interface PortableTextBlock {
     href?: string
   }>
   style?: string
+  listItem?: 'bullet' | 'number'
+  level?: number
 }
 
 export interface Subscriber {

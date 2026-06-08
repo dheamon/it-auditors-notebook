@@ -130,6 +130,7 @@ export interface PublishedArticleForEdit {
   slug: { current: string }
   excerpt?: string
   markdownContent?: string
+  content?: import('@/types').PortableTextBlock[]   // block content from Studio
   category?: { _id: string; name: string }
   tags?: string[]
   publishedDate: string
@@ -140,7 +141,7 @@ export interface PublishedArticleForEdit {
 export async function getPublishedArticleById(id: string): Promise<PublishedArticleForEdit | null> {
   return writeClient.fetch(
     `*[_type == "article" && _id == $id][0] {
-      _id, title, slug, excerpt, markdownContent,
+      _id, title, slug, excerpt, markdownContent, content,
       category->{_id, name},
       tags, publishedDate, seoTitle, seoDescription
     }`,

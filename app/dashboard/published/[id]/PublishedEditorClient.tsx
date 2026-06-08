@@ -159,14 +159,20 @@ function TagInput({ tags, onChange }: { tags: string[]; onChange: (tags: string[
 // Main PublishedEditorClient
 // ─────────────────────────────────────────────────────────────────────────────
 
-export default function PublishedEditorClient({ article }: { article: PublishedArticleForEdit }) {
+export default function PublishedEditorClient({
+  article,
+  initialContent,
+}: {
+  article: PublishedArticleForEdit
+  initialContent: string
+}) {
   const router = useRouter()
 
   const [title, setTitle] = useState(article.title || '')
   const [category, setCategory] = useState(article.category?.name || '')
   const [tags, setTags] = useState<string[]>(article.tags || [])
   const [excerpt, setExcerpt] = useState(article.excerpt || '')
-  const [content, setContent] = useState(article.markdownContent || '')
+  const [content, setContent] = useState(initialContent)
 
   const [leftTab, setLeftTab] = useState<'metadata' | 'validate'>('metadata')
   const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'unsaved' | 'error'>('saved')
@@ -482,16 +488,15 @@ export default function PublishedEditorClient({ article }: { article: PublishedA
 
         {/* ── Right panel (editor) ──────────────────────────────── */}
         <div className="flex-1 min-h-0 min-w-0 overflow-hidden" data-color-mode="light">
-          {!article.markdownContent && (
+          {!article.markdownContent && article.content?.length ? (
             <div
-              className="px-4 py-2 text-xs border-b border-amber-200 flex items-center gap-2"
-              style={{ background: '#FFFBEB', color: '#92400E' }}
+              className="px-4 py-2 text-xs border-b border-blue-100 flex items-center gap-2"
+              style={{ background: '#EFF6FF', color: '#1D4ED8' }}
             >
-              <span>⚠</span>
-              This article was originally authored in Sanity Studio (block content).
-              Editing here will set the markdown version — the block content is preserved as a fallback.
+              <span>ℹ</span>
+              Content imported from Sanity Studio. Review, then click <strong>Update Live</strong> to save.
             </div>
-          )}
+          ) : null}
           <MDEditor
             value={content}
             onChange={handleContentChange}
