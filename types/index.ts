@@ -37,6 +37,7 @@ export interface Article {
   seoTitle?: string
   seoDescription?: string
   estimatedReadingTime?: number
+  markdownContent?: string
 }
 
 export interface PortableTextBlock {

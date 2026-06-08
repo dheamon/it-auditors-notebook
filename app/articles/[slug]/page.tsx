@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { PortableText } from '@portabletext/react'
+import { marked } from 'marked'
 import { Calendar, Clock, User, ArrowLeft } from 'lucide-react'
 import { getArticleBySlug, getArticleSlugs, getRelatedArticles } from '@/lib/queries'
 import { formatDate, estimateReadingTime, absoluteUrl } from '@/lib/utils'
@@ -53,7 +54,14 @@ export default async function ArticlePage({ params }: Props) {
   const article = await getArticleBySlug(slug).catch(() => null)
   if (!article) notFound()
 
-  const readingTime = estimateReadingTime(article.content || [])
+  // Support both PortableText and markdown content
+  const readingTime = article.markdownContent
+    ? Math.max(1, Math.ceil(article.markdownContent.split(/\s+/).filter(Boolean).length / 200))
+    : estimateReadingTime(article.content || [])
+
+  const markdownHtml = article.markdownContent
+    ? await marked(article.markdownContent, { breaks: true, gfm: true })
+    : null
   const imageUrl = urlForImage(article.featuredImage, 1200, 630)
   const articleUrl = absoluteUrl(`/articles/${slug}`)
 
@@ -134,8 +142,16 @@ export default async function ArticlePage({ params }: Props) {
           </div>
         )}
 
-        {/* Article body */}
-        {article.content && (
+        {/* Article body — markdown (published from dashboard) */}
+        {markdownHtml && (
+          <div
+            className="md-content"
+            dangerouslySetInnerHTML={{ __html: markdownHtml }}
+          />
+        )}
+
+        {/* Article body — PortableText (authored in Sanity Studio) */}
+        {!markdownHtml && article.content && (
           <div className="prose prose-base md:prose-lg max-w-none">
             <PortableText value={article.content} components={portableTextComponents} />
           </div>

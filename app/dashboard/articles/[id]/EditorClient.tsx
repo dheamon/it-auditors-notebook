@@ -15,6 +15,8 @@ import {
   BarChart3,
   FileText,
   ArrowLeft,
+  Globe,
+  ExternalLink,
 } from 'lucide-react'
 import { CATEGORIES } from '@/lib/config'
 import { validateArticle, countWords, estimateReadTime } from '@/lib/validation'
@@ -235,6 +237,10 @@ export default function EditorClient({ draft }: { draft: DraftArticle }) {
   const [lastSaved, setLastSaved] = useState<Date | null>(null)
   const [validation, setValidation] = useState<ValidationReport | null>(null)
   const [isValidating, setIsValidating] = useState(false)
+  const [publishStatus, setPublishStatus] = useState<'idle' | 'publishing' | 'done' | 'error'>(
+    draft.status === 'published' ? 'done' : 'idle'
+  )
+  const [publishedSlug, setPublishedSlug] = useState<string | null>(null)
 
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const latestRef = useRef({ title, category, tags, excerpt, content })
@@ -284,6 +290,37 @@ export default function EditorClient({ draft }: { draft: DraftArticle }) {
       setSaveStatus('error')
     }
   }, [draft._id])
+
+  const publish = useCallback(async () => {
+    if (!title.trim()) {
+      alert('Add a title before publishing.')
+      return
+    }
+    if (!confirm('Publish this article to the live blog?')) return
+
+    // Save first so Sanity has the latest content
+    await save()
+
+    setPublishStatus('publishing')
+    try {
+      const res = await fetch('/api/dashboard/publish', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ draftId: draft._id }),
+      })
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        throw new Error(body.error || 'Publish failed')
+      }
+      const data = await res.json()
+      setPublishStatus('done')
+      setPublishedSlug(data.slug)
+    } catch (err) {
+      console.error(err)
+      setPublishStatus('error')
+      alert('Failed to publish. Please try again.')
+    }
+  }, [draft._id, title, save])
 
   const scheduleSave = useCallback(() => {
     setSaveStatus('unsaved')
@@ -383,7 +420,7 @@ export default function EditorClient({ draft }: { draft: DraftArticle }) {
           onClick={save}
           disabled={saveStatus === 'saving'}
           className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white rounded-lg transition-opacity hover:opacity-90 disabled:opacity-60 flex-shrink-0"
-          style={{ background: '#6366F1' }}
+          style={{ background: '#2D3748' }}
         >
           {saveStatus === 'saving' ? (
             <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -392,6 +429,36 @@ export default function EditorClient({ draft }: { draft: DraftArticle }) {
           )}
           <span className="hidden sm:inline">Save</span>
         </button>
+
+        {/* Publish / Published */}
+        {publishStatus === 'done' && publishedSlug ? (
+          <a
+            href={`/articles/${publishedSlug}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white rounded-lg flex-shrink-0"
+            style={{ background: '#059669' }}
+          >
+            <ExternalLink className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">View Live</span>
+          </a>
+        ) : (
+          <button
+            onClick={publish}
+            disabled={publishStatus === 'publishing' || publishStatus === 'done'}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white rounded-lg transition-opacity hover:opacity-90 disabled:opacity-60 flex-shrink-0"
+            style={{ background: '#6366F1' }}
+          >
+            {publishStatus === 'publishing' ? (
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            ) : (
+              <Globe className="w-3.5 h-3.5" />
+            )}
+            <span className="hidden sm:inline">
+              {publishStatus === 'publishing' ? 'Publishing…' : 'Publish'}
+            </span>
+          </button>
+        )}
       </div>
 
       {/* ── Body ────────────────────────────────────────────── */}

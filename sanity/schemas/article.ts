@@ -95,6 +95,12 @@ export const articleSchema = defineType({
       ],
     }),
     defineField({
+      name: 'markdownContent',
+      title: 'Content (Markdown)',
+      type: 'text',
+      description: 'Used when article was published from the dashboard editor.',
+    }),
+    defineField({
       name: 'author',
       title: 'Author',
       type: 'reference',

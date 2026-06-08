@@ -44,7 +44,8 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
   return sanityClient.fetch(
     `*[_type == "article" && slug.current == $slug][0] {
       ${articleFields},
-      content
+      content,
+      markdownContent
     }`,
     { slug }
   )
