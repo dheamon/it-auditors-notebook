@@ -50,8 +50,16 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        heading: ['Inter', 'system-ui', 'sans-serif'],
+        // Bespoke Sans — body text and UI. Use font-weight to pick the variant:
+        //   font-light (300) · font-normal (400) · font-medium (500)
+        //   font-semibold (600) · font-bold (700) · font-extrabold (800)
+        sans:            ['var(--font-bespoke-sans)', 'system-ui', 'sans-serif'],
+        'bespoke-sans':  ['var(--font-bespoke-sans)', 'system-ui', 'sans-serif'],
+
+        // Expose — headings and display text. Use font-weight to pick the variant:
+        //   font-normal (400) · font-medium (500) · font-bold (700) · font-black (900)
+        heading: ['var(--font-expose)', 'system-ui', 'sans-serif'],
+        expose:  ['var(--font-expose)', 'system-ui', 'sans-serif'],
       },
       typography: (theme: (path: string) => string) => ({
         DEFAULT: {

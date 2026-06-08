@@ -1,18 +1,74 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+/* ─── Markdown editor styles (dashboard only) ────────────────────────────── */
 @import '@uiw/react-md-editor/markdown-editor.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/*
+════════════════════════════════════════════════════════════════════════════════
+  TYPOGRAPHY SYSTEM
+  Self-hosted fonts loaded via next/font/local in app/layout.tsx.
+  All font files live in public/fonts/ (woff2 only).
+════════════════════════════════════════════════════════════════════════════════
+
+  EXPOSE  ·  display / heading font
+  ──────────────────────────────────
+  CSS var  : var(--font-expose)
+  Tailwind : font-heading  |  font-expose
+  Files    : Expose-Variable.woff2  (primary — covers all weights 100–900)
+             Expose-Regular.woff2   (400)
+             Expose-Medium.woff2    (500)
+             Expose-Bold.woff2      (700)  ← default for h1–h6
+             Expose-Black.woff2     (900)
+
+  Tailwind usage  →  <h1 className="font-heading font-bold">
+  CSS usage       →  font-family: var(--font-expose); font-weight: 700;
+
+  BESPOKE SANS  ·  body / UI font
+  ─────────────────────────────────
+  CSS var  : var(--font-bespoke-sans)
+  Tailwind : font-sans  |  font-bespoke-sans
+  Files    : BespokeSans-Variable.woff2        (primary — all weights, normal)
+             BespokeSans-VariableItalic.woff2  (all weights, italic)
+             BespokeSans-Light.woff2           (300)
+             BespokeSans-Regular.woff2         (400)  ← default for body
+             BespokeSans-Medium.woff2          (500)
+             BespokeSans-Bold.woff2            (700)
+             BespokeSans-Extrabold.woff2       (800)
+
+  Tailwind usage  →  <p className="font-sans font-normal">
+  CSS usage       →  font-family: var(--font-bespoke-sans); font-weight: 400;
+
+  QUICK REFERENCE
+  ───────────────
+  Heading XL   font-heading font-bold   text-5xl    → Expose Bold
+  Heading LG   font-heading font-bold   text-3xl    → Expose Bold
+  Heading MD   font-heading font-medium text-xl     → Expose Medium
+  Body         font-sans    font-normal             → Bespoke Sans Regular
+  Body strong  font-sans    font-bold               → Bespoke Sans Bold
+  UI label     font-sans    font-medium text-sm     → Bespoke Sans Medium
+  Caption      font-sans    font-light  text-xs     → Bespoke Sans Light
+
+════════════════════════════════════════════════════════════════════════════════
+*/
+
 @layer base {
   html {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: var(--font-bespoke-sans), system-ui, sans-serif;
     scroll-behavior: smooth;
   }
 
   body {
     @apply bg-gray-50 text-gray-900 antialiased;
+    font-family: var(--font-bespoke-sans), system-ui, sans-serif;
+    font-weight: 400;
+  }
+
+  /* All headings use Expose Bold by default, matching the reference design */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-expose), system-ui, sans-serif;
+    font-weight: 700;
   }
 
   *:focus-visible {

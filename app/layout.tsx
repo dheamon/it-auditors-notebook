@@ -1,11 +1,34 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import localFont from 'next/font/local'
 import './globals.css'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { siteConfig } from '@/lib/config'
 
-const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' })
+// ── Expose — display / heading font ────────────────────────────────────────
+// Variable font covers all weights (100–900) in a single file.
+// Use font-weight to select: 400 Regular, 500 Medium, 700 Bold, 900 Black
+const expose = localFont({
+  src: [
+    { path: '../public/fonts/Expose-Variable.woff2', weight: '100 900', style: 'normal' },
+  ],
+  variable: '--font-expose',
+  display: 'swap',
+  fallback: ['system-ui', 'sans-serif'],
+})
+
+// ── Bespoke Sans — body / UI font ───────────────────────────────────────────
+// Variable fonts cover all weights (100–900) in two files (normal + italic).
+// Use font-weight to select: 300 Light, 400 Regular, 500 Medium, 700 Bold, 800 Extrabold
+const bespokeSans = localFont({
+  src: [
+    { path: '../public/fonts/BespokeSans-Variable.woff2',       weight: '100 900', style: 'normal' },
+    { path: '../public/fonts/BespokeSans-VariableItalic.woff2', weight: '100 900', style: 'italic' },
+  ],
+  variable: '--font-bespoke-sans',
+  display: 'swap',
+  fallback: ['system-ui', 'sans-serif'],
+})
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.siteUrl),
@@ -34,7 +57,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={`${expose.variable} ${bespokeSans.variable}`}>
       <body className="min-h-screen flex flex-col bg-[#F7FAFC]">
         <Header />
         <main className="flex-1">{children}</main>
