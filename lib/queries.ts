@@ -124,6 +124,30 @@ export async function getCategorySlugs(): Promise<{ slug: { current: string } }[
   )
 }
 
+export interface PublishedArticleForEdit {
+  _id: string
+  title: string
+  slug: { current: string }
+  excerpt?: string
+  markdownContent?: string
+  category?: { _id: string; name: string }
+  tags?: string[]
+  publishedDate: string
+  seoTitle?: string
+  seoDescription?: string
+}
+
+export async function getPublishedArticleById(id: string): Promise<PublishedArticleForEdit | null> {
+  return writeClient.fetch(
+    `*[_type == "article" && _id == $id][0] {
+      _id, title, slug, excerpt, markdownContent,
+      category->{_id, name},
+      tags, publishedDate, seoTitle, seoDescription
+    }`,
+    { id }
+  )
+}
+
 export interface PublishedArticleSummary {
   _id: string
   title: string

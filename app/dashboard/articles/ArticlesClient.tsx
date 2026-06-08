@@ -356,18 +356,18 @@ export default function ArticlesClient({ initialDrafts, publishedArticles }: Pro
           </div>
         ) : (
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-            <div className="hidden sm:grid grid-cols-[1fr_160px_140px_80px] gap-4 px-4 py-3 text-xs font-semibold uppercase tracking-wider text-gray-400 border-b border-gray-100">
+            <div className="hidden sm:grid grid-cols-[1fr_160px_140px_160px] gap-4 px-4 py-3 text-xs font-semibold uppercase tracking-wider text-gray-400 border-b border-gray-100">
               <span>Title</span>
               <span>Published</span>
               <span>Category</span>
-              <span className="text-right">View</span>
+              <span className="text-right">Actions</span>
             </div>
 
             <div className="divide-y divide-gray-50">
               {filteredPublished.map(article => (
                 <div
                   key={article._id}
-                  className="grid grid-cols-1 sm:grid-cols-[1fr_160px_140px_80px] gap-2 sm:gap-4 px-4 py-4 hover:bg-gray-50 transition items-center"
+                  className="grid grid-cols-1 sm:grid-cols-[1fr_160px_140px_160px] gap-2 sm:gap-4 px-4 py-4 hover:bg-gray-50 transition items-center"
                 >
                   {/* Title */}
                   <div className="min-w-0">
@@ -406,8 +406,19 @@ export default function ArticlesClient({ initialDrafts, publishedArticles }: Pro
                     {article.category?.name ?? '—'}
                   </span>
 
-                  {/* View live */}
-                  <div className="sm:flex sm:justify-end">
+                  {/* Actions */}
+                  <div className="flex items-center gap-1.5 sm:justify-end">
+                    {/* Edit */}
+                    <Link
+                      href={`/dashboard/published/${article._id}`}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-opacity hover:opacity-80"
+                      style={{ background: '#EEF2FF', color: '#4338CA' }}
+                      title="Edit article"
+                    >
+                      <Pencil className="w-3.5 h-3.5" />
+                      Edit
+                    </Link>
+                    {/* View */}
                     <a
                       href={`/articles/${article.slug.current}`}
                       target="_blank"
